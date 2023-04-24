@@ -21,7 +21,7 @@ cd UntitledImGuiFramework/UVKBuildTool/build || exit
 ./UVKBuildTool.exe --generate ../../../ || ./UVKBuildTool --generate ../../../ || exit
 cd ../../../
 
-cd LXDBindings || exit
+cd hanzi_lookup || exit
 cargo build --release
 cd ..
 #go build -o libUGM_LXD_InternalFuncs.so -buildmode=c-shared . || exit
