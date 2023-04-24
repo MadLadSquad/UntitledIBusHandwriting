@@ -11,3 +11,10 @@ This project uses the [hanzi-lookup](https://github.com/gugray/hanzi_lookup/) li
 Features:
 1. Fed additional data from [hanzi-writer-data-youyin](https://github.com/MadLadSquad/hanzi-writer-data-youyin/) for larger script support
 1. Fast and accurate character recognition, even when you make mistakes
+
+## Install
+Run clone the source code with submodules and run `ci.sh` to install the application. Note that you might need the following dependencies(Ubuntu as an example):
+```
+sudo apt-get update && sudo apt-get install x11-xserver-utils libgl1-mesa-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gcc make g++ libxmu-dev libxi-dev libgl-dev libglu1-mesa-dev libvulkan1 mesa-vulkan-drivers vulkan-tools libvulkan-dev libasound2-dev libflac-dev libogg-dev libtool libvorbis-dev libopus-dev libsndfile1-dev libglew-dev libssl-dev zlib1g zlib1g-dev
+```
++ a modern installation of the Rust programming language.
