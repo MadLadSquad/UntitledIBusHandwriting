@@ -17,4 +17,4 @@ Run clone the source code with submodules and run `ci.sh` to install the applica
 ```
 sudo apt-get update && sudo apt-get install x11-xserver-utils libgl1-mesa-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gcc make g++ libxmu-dev libxi-dev libgl-dev libglu1-mesa-dev libvulkan1 mesa-vulkan-drivers vulkan-tools libvulkan-dev libasound2-dev libflac-dev libogg-dev libtool libvorbis-dev libopus-dev libsndfile1-dev libglew-dev libssl-dev zlib1g zlib1g-dev
 ```
-+ a modern installation of the Rust programming language.
+\+ a modern installation of the Rust programming language.
