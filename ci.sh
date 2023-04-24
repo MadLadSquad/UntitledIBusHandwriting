@@ -21,9 +21,9 @@ cd UntitledImGuiFramework/UVKBuildTool/build || exit
 ./UVKBuildTool.exe --generate ../../../ || ./UVKBuildTool --generate ../../../ || exit
 cd ../../../
 
-# TODO: Replace this with rust compilation code
-#cd LXDBindings || exit
-#go get . || exit
+cd LXDBindings || exit
+cargo build --release
+cd ..
 #go build -o libUGM_LXD_InternalFuncs.so -buildmode=c-shared . || exit
 #cd .. || exit
 
