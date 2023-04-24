@@ -30,6 +30,6 @@ UntitledIBusHandwriting::Instance::~Instance()
 
 void UntitledIBusHandwriting::Instance::onEventConfigureStyle(ImGuiStyle& style, ImGuiIO& io)
 {
-
+    io.Fonts->AddFontFromFileTTF("../Content/NotoSansCJK-Regular.ttc", 18.0f, nullptr, io.Fonts->GetGlyphRangesChineseFull());
 }
 

@@ -12,7 +12,9 @@ namespace UntitledIBusHandwriting
         virtual void end() override;
         virtual ~MainView() override;
     private:
-
+        void* lib;
+        std::function<const char*(size_t, const char*)> loadData;
+        std::function<void(const char*)> deallocateLoadedData;
     };
 }
 

@@ -8,7 +8,7 @@ enabled-modules:
   theming: true
   notifications: false
   polkit: false
-  ufont: false
+  ufont: true
   audio: false
   locale: true
   network: false

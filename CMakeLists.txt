@@ -39,7 +39,7 @@ if (USE_OS_MODULE)
     option(ENABLE_THEMING "Compile in the UDE theme integration system for supporting theming in your application" ON)
     option(ENABLE_NOTIFICATIONS "Compile in support for cross platform notifications" OFF)
     option(ENABLE_POLKIT_UTILS "Compile in utilities for dealing with polkit" OFF)
-    option(ENABLE_UFONT_UTILS "Compiles in cross-platform utilities for dealing with system fonts" OFF)
+    option(ENABLE_UFONT_UTILS "Compiles in cross-platform utilities for dealing with system fonts" ON)
 
     if (ENABLE_DBUS_UTILS)
         find_package(PkgConfig REQUIRED)

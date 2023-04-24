@@ -1,0 +1,3 @@
+[submodule "hanzi_lookup"]
+	path = hanzi_lookup
+	url = https://github.com/MadLadSquad/hanzi_lookup/
