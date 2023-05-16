@@ -3,6 +3,7 @@
 
 namespace UntitledIBusHandwriting
 {
+    class Instance;
     class UIMGUI_PUBLIC_API MainView : public UImGui::InlineComponent
     {
     public:
@@ -12,6 +13,8 @@ namespace UntitledIBusHandwriting
         virtual void end() override;
         virtual ~MainView() override;
     private:
+        Instance* data = nullptr;
+
         void* lib;
         std::function<const char*(size_t, const char*)> loadData;
         std::function<void(const char*)> deallocateLoadedData;

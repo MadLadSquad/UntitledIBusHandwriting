@@ -28,6 +28,15 @@ add_subdirectory(Framework/ThirdParty/yaml-cpp)
 add_subdirectory(Framework/ThirdParty/freetype)
 set(BUILD_SHARED_LIBS OFF)
 
+# Custom section
+include(${CMAKE_ROOT}/Modules/FindPkgConfig.cmake)
+pkg_check_modules(IBus REQUIRED ibus-1.0)
+
+if(IBus_FOUND)
+    include_directories(${IBus_INCLUDE_DIRS})
+    link_directories(${IBus_LIBRARY_DIRS})
+endif(IBus_FOUND)
+
 # ----------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------- Add compile options ------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -315,7 +324,8 @@ if (WIN32)
     target_link_libraries(UntitledImGuiFramework glfw opengl32 libglew_static yaml-cpp freetype vulkan-1)
     target_link_libraries(UntitledIBusHandwriting UntitledImGuiFramework yaml-cpp)
 else()
-    target_link_libraries(UntitledImGuiFramework glfw GLEW OpenGL util pthread yaml-cpp dl freetype vulkan)
+    target_link_libraries(UntitledImGuiFramework glfw GLEW OpenGL util pthread yaml-cpp dl freetype vulkan
+            ${IBus_LIBRARIES})
     target_link_libraries(UntitledIBusHandwriting UntitledImGuiFramework yaml-cpp dl util)
 
     if (USE_OS_MODULE)

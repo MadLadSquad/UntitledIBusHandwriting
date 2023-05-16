@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component>
+    <name>org.freedesktop.IBus.UntitledIBusHandwriting</name>
+    <description>The UntitledIBusHandwriting engine</description>
+    <exec>/usr/libexec/UntitledIBusHandwriting --ibus</exec>
+    <version>1.0.0.0</version>
+    <author>MadLadSquad &lt;contact@madladsquad.com&gt;</author>
+    <license>MIT</license>
+    <homepage>https://github.com/MadLadSquad/UntitledIBusHandwriting/</homepage>
+    <textdomain>UntitledIBusHandwriting</textdomain>
+
+    <engines>
+        <engine>
+            <name>UntitledIBusHandwriting</name>
+            <language>bg</language>
+            <license>MIT</license>
+            <author>MadLadSquad &lt;contact@madladsquad.com&gt;</author>
+            <icon>/usr/share/UntitledIBusHandwriting/icons/untitled-ibus-handwriting.png</icon>
+            <layout>default</layout>
+            <longname>UntitledIBusHandwriting</longname>
+            <description>The UntitledIBusHandwriting engine</description>
+            <rank>0</rank>
+        </engine>
+    </engines>
+
+</component>
