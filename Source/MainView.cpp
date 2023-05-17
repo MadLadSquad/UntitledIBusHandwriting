@@ -226,7 +226,6 @@ void UntitledIBusHandwriting::MainView::tick(float deltaTime)
     }
 
     draw_list->PopClipRect();
-    ImGui::ShowDemoWindow((bool*)nullptr);
 }
 
 void UntitledIBusHandwriting::MainView::end()
