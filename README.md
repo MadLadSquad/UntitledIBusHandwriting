@@ -6,6 +6,8 @@
 
 A multilingual handwriting IM for IBus.
 
+![image](https://github.com/MadLadSquad/UntitledIBusHandwriting/assets/40400590/b15035d2-2687-40c2-a9c1-0305182a966f)
+
 This project uses the [hanzi-lookup](https://github.com/gugray/hanzi_lookup/) library which handles character recognition.
 
 Features:
