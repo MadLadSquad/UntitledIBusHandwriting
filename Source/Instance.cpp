@@ -14,6 +14,7 @@ void UntitledIBusHandwriting::Instance::begin()
 {
     beginAutohandle();
     UImGui::Window::Platform::setWindowAlwaysOnTop();
+    UImGui::Window::Platform::setWindowType(X11_WINDOW_TYPE_SPLASH);
 
     gboolean bIBusAvailable = false;
 

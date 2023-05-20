@@ -17,7 +17,6 @@ namespace UntitledIBusHandwriting
         gboolean (*commit_text)(IBusCustomEngine* engine, int index);
     };
 
-
     gboolean engine_commit_text(IBusCustomEngine* engine, int index);
     GType engine_get_type();
 
