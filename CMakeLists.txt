@@ -74,11 +74,8 @@ if (USE_OS_MODULE)
     endif()
 endif()
 
-option(USE_AUDIO_MODULE "Use the audio module" OFF)
-option(USE_LOCALE_MODULE "Use the locale module" ON)
-option(USE_NETWORKING_MODULE "Use the networking module" OFF)   # Not functional right now
-option(USE_UNDO_MODULE "Use the Undo/Redo module" OFF)          # Not functional right now
-option(USE_VIDEO_MODULE "Use the video module" OFF)             # Not functional right now
+option(USE_I18N_MODULE "Use the i18n module" ON)
+option(USE_UNDO_MODULE "Use the Undo/Redo module" OFF)
 
 # Styling and GUI widgets modules
 option(USE_PLOTTING_MODULE "Use the plotting module" OFF)
@@ -86,7 +83,6 @@ option(USE_KNOBS_MODULE "Use the knobs module" OFF)
 option(USE_SPINNER_MODULE "Use the spinners module" OFF)
 option(USE_TOGGLES_MODULE "Use the toggles module" OFF)
 option(USE_TEXT_UTILS_MODULE "Use the text utils module" OFF)
-option(USE_MARKDOWN_MODULE "Use the markdown rendering module" OFF)
 option(USE_CLI_PARSER_MODULE "Use the CLI Parser module" OFF)
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -137,17 +133,15 @@ endif()
 
 file(GLOB_RECURSE UGUI_SRC "Framework/Core/*.cpp" "Framework/Renderer/*.cpp" ${IMGUI_SRC}
         "Framework/ThirdParty/imgui/core/*.cpp" "Framework/ThirdParty/imgui/misc/cpp/*.cpp"
-        "Framework/ThirdParty/imgui/misc/freetype/*.cpp"
-        "Framework/ThirdParty/logger/*.cpp" "Framework/ThirdParty/source-libraries/*.cpp"
-        "Framework/Modules/Audio/src/*.cpp" "Framework/Modules/Locale/src/*.cpp" "Source/*.cpp"
+        "Framework/ThirdParty/imgui/misc/freetype/*.cpp" "Framework/ThirdParty/logger/*.cpp"
+        "Framework/ThirdParty/source-libraries/*.cpp" "Framework/Modules/i18n/src/*.cpp" "Source/*.cpp"
         "Framework/Modules/Undo/src/*.cpp" "Framework/Modules/Manager/*.cpp" "Framework/Modules/OS/*.cpp"
         "Framework/Modules/Modules.hpp")
 file(GLOB_RECURSE UGUI_HEAD "Framework/Core/*.hpp" "Framework/Renderer/*.hpp" ${IMGUI_HEAD}
         "Framework/ThirdParty/imgui/core/*.h" "Framework/ThirdParty/imgui/misc/cpp/*.h"
-        "Framework/ThirdParty/imgui/misc/freetype/*.h"
-        "Framework/ThirdParty/logger/*.h" "Framework/ThirdParty/source-libraries/*.h"
-        "Framework/ThirdParty/source-libraries/*.hpp" "Framework/Modules/Audio/src/*.hpp"
-        "Framework/Modules/Locale/src/*.hpp" "Source/*.hpp" "Framework/Modules/Undo/src/*.hpp"
+        "Framework/ThirdParty/imgui/misc/freetype/*.h" "Framework/ThirdParty/logger/*.h"
+        "Framework/ThirdParty/source-libraries/*.h" "Framework/ThirdParty/source-libraries/*.hpp"
+        "Framework/Modules/i18n/src/*.hpp" "Source/*.hpp" "Framework/Modules/Undo/src/*.hpp"
         "Framework/Modules/Manager/*.hpp" "Framework/Modules/OS/*.h" "Framework/Modules/OS/*.hpp")
 file(GLOB_RECURSE EXEC_SRC "")
 
@@ -243,14 +237,9 @@ if (USE_CLI_PARSER_MODULE)
     target_compile_definitions(UntitledLinuxGameManager PRIVATE "UIMGUI_CLI_PARSER_MODULE_ENABLED")
 endif()
 
-if (USE_AUDIO_MODULE)
-    target_compile_definitions(UntitledImGuiFramework PRIVATE "UIMGUI_AUDIO_MODULE_ENABLED")
-    target_compile_definitions(UntitledIBusHandwriting PRIVATE "UIMGUI_AUDIO_MODULE_ENABLED")
-endif()
-
-if (USE_LOCALE_MODULE)
-    target_compile_definitions(UntitledImGuiFramework PRIVATE "UIMGUI_LOCALE_MODULE_ENABLED")
-    target_compile_definitions(UntitledIBusHandwriting PRIVATE "UIMGUI_LOCALE_MODULE_ENABLED")
+if (USE_I18N_MODULE)
+    target_compile_definitions(UntitledImGuiFramework PRIVATE "UIMGUI_I18N_MODULE_ENABLED")
+    target_compile_definitions(UntitledIBusHandwriting PRIVATE "UIMGUI_I18N_MODULE_ENABLED")
 endif()
 
 if (USE_PLOTTING_MODULE)
