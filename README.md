@@ -4,15 +4,18 @@
 [![trello](https://img.shields.io/badge/Trello-UDE-blue])](https://trello.com/b/HmfuRY2K/untitleddesktop)
 [![Discord](https://img.shields.io/discord/717037253292982315.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/4wgH8ZE)
 
-A multilingual handwriting IM for IBus.
+![image](https://github.com/MadLadSquad/UntitledIBusHandwriting/assets/40400590/c9f4f7b8-580a-44cf-b090-cdcb8bb546b8)
 
-![image](https://github.com/MadLadSquad/UntitledIBusHandwriting/assets/40400590/b15035d2-2687-40c2-a9c1-0305182a966f)
+A multilingual handwriting IM for IBus.
 
 This project uses the [hanzi-lookup](https://github.com/gugray/hanzi_lookup/) library which handles character recognition.
 
 Features:
 1. Fed additional data from [hanzi-writer-data-youyin](https://github.com/MadLadSquad/hanzi-writer-data-youyin/) for larger script support
 1. Fast and accurate character recognition, even when you make mistakes
+
+## Showcase
+![image](https://github.com/MadLadSquad/UntitledIBusHandwriting/assets/40400590/b15035d2-2687-40c2-a9c1-0305182a966f)
 
 ## Install
 Run clone the source code with submodules and run `ci.sh` to install the application. Note that you might need the following dependencies(Ubuntu as an example):
