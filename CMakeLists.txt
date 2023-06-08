@@ -18,12 +18,17 @@ set(UIMGUI_PLATFORM "DESKTOP" CACHE STRING "Can be set to DESKTOP when building 
 # ------------------------------------------------- Add subdirectories -------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 
+option(BUILD_VARIANT_STATIC "Builds the Framework, application library(exists only on Unix) and executable into a single
+    executable binary" OFF)
+
 add_subdirectory(Framework/ThirdParty/glfw)
 add_subdirectory(Framework/ThirdParty/glew)
 add_subdirectory(Framework/Modules/CLIParser/ThirdParty/UntitledCLIParser/ThirdParty/utfcpp)
 add_subdirectory(Framework/ThirdParty/vulkan-headers)
 
-set(BUILD_SHARED_LIBS ON)
+if (NOT BUILD_VARIANT_STATIC)
+    set(BUILD_SHARED_LIBS ON)
+endif()
 add_subdirectory(Framework/ThirdParty/yaml-cpp)
 add_subdirectory(Framework/ThirdParty/freetype)
 set(BUILD_SHARED_LIBS OFF)
@@ -40,6 +45,8 @@ endif(IBus_FOUND)
 # ----------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------- Add compile options ------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
+
+option(BUILD_VARIANT_VENDOR "If set to OFF will use the globally installed framework(not recommended on Windows)" ON)
 
 option(USE_OS_MODULE "Use the operating system module" ON)
 if (USE_OS_MODULE)
@@ -215,11 +222,19 @@ endif()
 # --------------------------------------------------- Compile binaries -------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 
-add_library(UntitledImGuiFramework SHARED ${UGUI_SRC} ${UGUI_HEAD} Generated/BuildDef.hpp ${UGUI_IMPLOT_SRC}
-        ${UGUI_IMPLOT_HEAD} ${UGUI_OS_SRC} ${UGUI_OS_HEAD} ${UGUI_TOGGLES_HEAD} ${UGUI_TOGGLES_SRC} ${UGUI_SPINNER_HEAD}
-        ${UGUI_KNOBS_HEAD} ${UGUI_KNOBS_SRC} ${UGUI_CLI_SRC} ${UGUI_CLI_HEAD})
-add_executable(UntitledIBusHandwriting Generated/main.cpp ${UGUI_HEAD} ${EXEC_SRC} Generated/BuildDef.hpp ${UGUI_IMPLOT_HEAD}
-        ${UGUI_OS_HEAD} ${UGUI_TOGGLES_HEAD} ${UGUI_SPINNER_HEAD} ${UGUI_KNOBS_HEAD} ${UGUI_CLI_HEAD})
+set(LIBRARY_SOURCES "${UGUI_SRC}" "${UGUI_HEAD}" "Generated/BuildDef.hpp" "${UGUI_IMPLOT_SRC}"
+        "${UGUI_IMPLOT_HEAD}" "${UGUI_OS_SRC}" "${UGUI_OS_HEAD}" "${UGUI_TOGGLES_HEAD}" "${UGUI_TOGGLES_SRC}"
+        "${UGUI_SPINNER_HEAD}" "${UGUI_KNOBS_HEAD}" "${UGUI_KNOBS_SRC}" "${UGUI_CLI_SRC}" "${UGUI_CLI_HEAD}")
+set(EXECUTABLE_SOURCES "Generated/main.cpp" "${UGUI_HEAD}" "${EXEC_SRC}" "Generated/BuildDef.hpp"
+        "${UGUI_IMPLOT_HEAD}" "${UGUI_OS_HEAD}" "${UGUI_TOGGLES_HEAD}" "${UGUI_SPINNER_HEAD}" "${UGUI_KNOBS_HEAD}"
+        "${UGUI_CLI_HEAD}")
+if (BUILD_VARIANT_STATIC)
+    add_library(UntitledImGuiFramework STATIC "${LIBRARY_SOURCES}")
+    add_executable(UntitledIBusHandwriting ${EXECUTABLE_SOURCES})
+else()
+    add_library(UntitledImGuiFramework SHARED ${LIBRARY_SOURCES})
+    add_executable(UntitledIBusHandwriting ${EXECUTABLE_SOURCES})
+endif()
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------- Set up linker properties ---------------------------------------------
@@ -313,7 +328,7 @@ if (WIN32)
     target_link_libraries(UntitledImGuiFramework glfw opengl32 libglew_static yaml-cpp freetype vulkan-1)
     target_link_libraries(UntitledIBusHandwriting UntitledImGuiFramework yaml-cpp)
 else()
-    target_link_libraries(UntitledImGuiFramework glfw GLEW OpenGL util pthread yaml-cpp dl freetype vulkan
+    target_link_libraries(UntitledImGuiFramework glfw GLEW OpenGL util pthread yaml-cpp dl freetype vulkan X11
             ${IBus_LIBRARIES})
     target_link_libraries(UntitledIBusHandwriting UntitledImGuiFramework yaml-cpp dl util)
 
