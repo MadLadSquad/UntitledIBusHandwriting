@@ -247,9 +247,14 @@ set_target_properties(UntitledIBusHandwriting PROPERTIES LINKER_LANGUAGE CXX)
 # ------------------------------------------- Set up module compiler definitions ---------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 
+if (BUILD_VARIANT_STATIC)
+    target_compile_definitions(UntitledImGuiFramework PRIVATE "UIMGUI_BUILD_VARIANT_STATIC")
+    target_compile_definitions(UntitledIBusHandwriting PRIVATE "UIMGUI_BUILD_VARIANT_STATIC")
+endif()
+
 if (USE_CLI_PARSER_MODULE)
     target_compile_definitions(UntitledImGuiFramework PRIVATE "UIMGUI_CLI_PARSER_MODULE_ENABLED" "UCLI_COMPILE_WITH_UTF_SUPPORT")
-    target_compile_definitions(UntitledLinuxGameManager PRIVATE "UIMGUI_CLI_PARSER_MODULE_ENABLED")
+    target_compile_definitions(UntitledIBusHandwriting PRIVATE "UIMGUI_CLI_PARSER_MODULE_ENABLED")
 endif()
 
 if (USE_I18N_MODULE)
