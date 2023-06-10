@@ -252,6 +252,11 @@ if (BUILD_VARIANT_STATIC)
     target_compile_definitions(UntitledIBusHandwriting PRIVATE "UIMGUI_BUILD_VARIANT_STATIC")
 endif()
 
+if (BUILD_VARIANT_VENDOR)
+    target_compile_definitions(UntitledImGuiFramework PRIVATE "UIMGUI_BUILD_VARIANT_VENDOR")
+    target_compile_definitions(UntitledIBusHandwriting PRIVATE "UIMGUI_BUILD_VARIANT_VENDOR")
+endif()
+
 if (USE_CLI_PARSER_MODULE)
     target_compile_definitions(UntitledImGuiFramework PRIVATE "UIMGUI_CLI_PARSER_MODULE_ENABLED" "UCLI_COMPILE_WITH_UTF_SUPPORT")
     target_compile_definitions(UntitledIBusHandwriting PRIVATE "UIMGUI_CLI_PARSER_MODULE_ENABLED")
