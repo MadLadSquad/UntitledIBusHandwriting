@@ -83,6 +83,8 @@ endif()
 if (NOT BUILD_VARIANT_STATIC)
     set(BUILD_SHARED_LIBS ON)
 endif()
+
+add_subdirectory(Framework/ThirdParty/yaml-cpp)
 set(YAML_CPP_LIBRARIES_T "yaml-cpp")
 set(YAML_CPP_INCLUDE_DIRS_T "Framework/ThirdParty/yaml-cpp/include/yaml-cpp"
         "Framework/ThirdParty/yaml-cpp/include")
