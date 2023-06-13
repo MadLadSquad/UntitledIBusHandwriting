@@ -10,6 +10,7 @@ project(UntitledImGuiFramework)
 project(UntitledIBusHandwriting)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/Framework/cmake/")
 
 set(UIMGUI_PLATFORM "DESKTOP" CACHE STRING "Can be set to DESKTOP when building for WIN32, Linux, Mac, etc. ANDROID for
     Android and WEB for WASM")
@@ -21,20 +22,75 @@ set(UIMGUI_PLATFORM "DESKTOP" CACHE STRING "Can be set to DESKTOP when building 
 option(BUILD_VARIANT_STATIC "Builds the Framework, application library(exists only on Unix) and executable into a single
     executable binary" OFF)
 
-add_subdirectory(Framework/ThirdParty/glfw)
-add_subdirectory(Framework/ThirdParty/glew)
-add_subdirectory(Framework/Modules/CLIParser/ThirdParty/UntitledCLIParser/ThirdParty/utfcpp)
-add_subdirectory(Framework/ThirdParty/vulkan-headers)
+option(BUILD_VARIANT_VENDOR "If set to OFF will use the globally installed framework(not available on Windows)" ON)
+if (BUILD_VARIANT_VENDOR OR WIN32)
+    add_subdirectory(Framework/ThirdParty/glfw)
+    set(GLFW_INCLUDE_DIRS "Framework/ThirdParty/glfw/include/")
+    set(GLFW_LIBRARIES_T "glfw")
+    add_subdirectory(Framework/ThirdParty/glew)
+    set(GLEW_INCLUDE_DIRS "Framework/ThirdParty/glew/include")
+    if (WIN32)
+        set(GLEW_LIBRARIES_T "libglew_static")
+        set(OPENGL_LIBRARIES_T "opengl32")
+        set(VULKAN_LIBRARIES_T "vulkan-1")
+    else()
+        set(GLEW_LIBRARIES_T "GLEW")
+        set(OPENGL_LIBRARIES_T "OpenGL")
+        set(X11_LIBRARIES "X11")
+        set(VULKAN_LIBRARIES_T "vulkan")
+    endif()
+    add_subdirectory(Framework/ThirdParty/vulkan-headers)
+    if (NOT BUILD_VARIANT_STATIC)
+        set(BUILD_SHARED_LIBS ON)
+    endif()
+    add_subdirectory(Framework/ThirdParty/freetype)
+    set(FREETYPE_LIBRARIES "freetype")
+    set(FREETYPE_INCLUDE_DIRS "")
+    set(BUILD_SHARED_LIBS OFF)
+else()
+    find_package(PkgConfig REQUIRED)
+    find_package(OpenGL REQUIRED)
+    find_package(Freetype REQUIRED)
+    if (NOT WIN32)
+        find_package(X11 REQUIRED)
+    endif()
+    # Re-enable when yaml-cpp 0.8 is released
+    #if (BUILD_VARIANT_STATIC)
+    #    set(YamlCpp_STATIC ON)
+    #endif()
+    #
+    #include(FindYamlCpp)
+    #find_package(YamlCpp REQUIRED)
+    #set(YAML_CPP_INCLUDE_DIRS_T "${YamlCpp_INCLUDE_PATH}")
+    #set(YAML_CPP_LIBRARIES_T "${YamlCpp_LIBRARY}")
+    set(OPENGL_LIBRARIES_T "${OPENGL_gl_LIBRARY}")
+    pkg_check_modules(GLFW REQUIRED glfw3)
+    if (BUILD_VARIANT_STATIC)
+        set(GLFW_LIBRARIES_T ${GLFW_STATIC_LIBRARIES})
+    else()
+        set(GLFW_LIBRARIES_T ${GLFW_LIBRARIES})
+    endif()
+    pkg_check_modules(GLEW REQUIRED glew)
+    if (BUILD_VARIANT_STATIC)
+        set(GLEW_LIBRARIES_T ${GLEW_STATIC_LIBRARIES})
+    else()
+        set(GLEW_LIBRARIES_T ${GLEW_LIBRARIES})
+    endif()
+    pkg_check_modules(Vulkan REQUIRED vulkan)
+    set(VULKAN_LIBRARIES_T ${Vulkan_LINK_LIBRARIES})
+endif()
 
 if (NOT BUILD_VARIANT_STATIC)
     set(BUILD_SHARED_LIBS ON)
 endif()
-add_subdirectory(Framework/ThirdParty/yaml-cpp)
-add_subdirectory(Framework/ThirdParty/freetype)
+set(YAML_CPP_LIBRARIES_T "yaml-cpp")
+set(YAML_CPP_INCLUDE_DIRS_T "Framework/ThirdParty/yaml-cpp/include/yaml-cpp"
+        "Framework/ThirdParty/yaml-cpp/include")
 set(BUILD_SHARED_LIBS OFF)
+add_subdirectory(Framework/Modules/CLIParser/ThirdParty/UntitledCLIParser/ThirdParty/utfcpp)
 
 # Custom section
-include(${CMAKE_ROOT}/Modules/FindPkgConfig.cmake)
+find_package(PkgConfig REQUIRED)
 pkg_check_modules(IBus REQUIRED ibus-1.0)
 
 if(IBus_FOUND)
@@ -45,8 +101,6 @@ endif(IBus_FOUND)
 # ----------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------- Add compile options ------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
-
-option(BUILD_VARIANT_VENDOR "If set to OFF will use the globally installed framework(not recommended on Windows)" ON)
 
 option(USE_OS_MODULE "Use the operating system module" ON)
 if (USE_OS_MODULE)
@@ -96,13 +150,12 @@ option(USE_CLI_PARSER_MODULE "Use the CLI Parser module" OFF)
 # ---------------------------------------------- Add files and directories ---------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 
-include_directories("Source/" "Framework/ThirdParty/yaml-cpp/include/yaml-cpp" "Framework/"
-        "Framework/ThirdParty/imgui/core/" "Framework/ThirdParty/imgui/backends/"
-        "Framework/ThirdParty/imgui/misc/" "Framework/ThirdParty/glfw/include" "Framework/ThirdParty/glew/include"
-        "Framework/ThirdParty/imgui/" "Framework/Core/" "Framework/Renderer/" "Framework/ThirdParty/logger/src/"
-        "Framework/ThirdParty/source-libraries/" "Framework/ThirdParty/yaml-cpp/include" "Framework/Modules" "."
-        "Framework/Modules/CLIParser/ThirdParty/UntitledCLIParser/ThirdParty/"
-        "Framework/ThirdParty/vulkan-headers/include")
+include_directories("Source/" "Framework/" "Framework/ThirdParty/imgui/core/" "Framework/ThirdParty/imgui/backends/"
+        "Framework/ThirdParty/imgui/misc/" "Framework/ThirdParty/imgui/" "Framework/Core/" "Framework/Renderer/"
+        "Framework/ThirdParty/logger/src/" "Framework/ThirdParty/source-libraries/" "Framework/Modules" "."
+        "Framework/Modules/CLIParser/ThirdParty/UntitledCLIParser/ThirdParty/"  ${YAML_CPP_INCLUDE_DIRS_T}
+        "Framework/ThirdParty/vulkan-headers/include" ${GLFW_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${FREETYPE_INCLUDE_DIRS}
+        )
 
 
 link_directories("ThirdParty/glew/lib" "Framework/ThirdParty/vulkan" UVKBuildTool/build)
@@ -335,12 +388,14 @@ target_compile_definitions(UntitledIBusHandwriting PRIVATE "UVK_LOG_EXPORT_FROM_
 # ----------------------------------------------------------------------------------------------------------------------
 
 if (WIN32)
-    target_link_libraries(UntitledImGuiFramework glfw opengl32 libglew_static yaml-cpp freetype vulkan-1)
-    target_link_libraries(UntitledIBusHandwriting UntitledImGuiFramework yaml-cpp)
+    target_link_libraries(UntitledImGuiFramework ${GLFW_LIBRARIES_T} ${GLEW_LIBRARIES_T} ${OPENGL_LIBRARIES_T}
+            ${YAML_CPP_LIBRARIES_T} ${FREETYPE_LIBRARIES} ${VULKAN_LIBRARIES_T})
+    target_link_libraries(UntitledIBusHandwriting UntitledImGuiFramework ${YAML_CPP_LIBRARIES_T})
 else()
-    target_link_libraries(UntitledImGuiFramework glfw GLEW OpenGL util pthread yaml-cpp dl freetype vulkan X11
+    target_link_libraries(UntitledImGuiFramework ${GLFW_LIBRARIES_T} ${GLEW_LIBRARIES_T} ${OPENGL_LIBRARIES_T}
+            ${YAML_CPP_LIBRARIES_T} ${FREETYPE_LIBRARIES} ${VULKAN_LIBRARIES_T} ${X11_LIBRARIES} util pthread dl
             ${IBus_LIBRARIES})
-    target_link_libraries(UntitledIBusHandwriting UntitledImGuiFramework yaml-cpp dl util)
+    target_link_libraries(UntitledIBusHandwriting UntitledImGuiFramework ${YAML_CPP_LIBRARIES_T} dl util)
 
     if (USE_OS_MODULE)
         if (ENABLE_DBUS_UTILS)
