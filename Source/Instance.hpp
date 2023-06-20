@@ -3,6 +3,7 @@
 #include "MainView.hpp"
 #include "Engine.hpp"
 #include <mutex>
+#include <thread>
 
 namespace UntitledIBusHandwriting
 {

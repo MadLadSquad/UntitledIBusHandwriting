@@ -2,6 +2,10 @@
 #include "Framework.hpp"
 #include "Instance.hpp"
 
+#ifndef UIBUS_HANDWRITE_DATA_DIR
+    #define UIBUS_HANDWRITE_DATA_DIR "/usr/share/"
+#endif
+
 #define IBUS_TYPE_CUSTOM_ENGINE	\
 	(engine_get_type())
 
@@ -124,7 +128,7 @@ void UntitledIBusHandwriting::Engine::initIBus(char* executable, bool bIbusAvail
    static IBusFactory* factory = nullptr;
 
    // TODO: Make this non-hardcoded and use the relevant variables
-   static constexpr char icondir[4096]= "/usr/share/icons/untitled-ibus-handwriting.png";
+   static constexpr char icondir[4096]= UIBUS_HANDWRITE_DATA_DIR"icons/untitled-ibus-handwriting.png";
 
    ibus_init();
    bus = ibus_bus_new();
@@ -154,7 +158,7 @@ void UntitledIBusHandwriting::Engine::initIBus(char* executable, bool bIbusAvail
    {
        component = ibus_component_new("org.freedesktop.IBus.UntitledIBusHandwriting",
                                       "The UntitledIBusHandwriting engine", "1.0.0.0", "MIT", "contact@madladsquad.com", "https://github.com/MadLadSquad/UntitledIBusHandwriting/",
-                                      "/usr/share/", "UntitledIBusHandwriting");
+                                      UIBUS_HANDWRITE_DATA_DIR, "UntitledIBusHandwriting");
    }
    ibus_bus_register_component(bus, component);
    ibus_factory_add_engine(factory, "UntitledIBusHandwriting", IBUS_TYPE_CUSTOM_ENGINE);
