@@ -19,3 +19,20 @@ enabled-modules:
   toggles: false
   text-utils: false
   cli-parser: false
+install-override:
+  unix:
+    application-binary-dir: libexec/
+additional-installs:
+  unix:
+    - file: Config/Custom/UntitledIBusHandwriting.xml
+      directory: share/ibus/component/
+      macro-name: UIBUS_HANDWRITE_IBUS_INSTALL_DIR
+      is-directory: false
+    - file: Content/untitled-ibus-handwrite.png
+      directory: share/icons/
+      macro-name: UIBUS_HANDWRITE_ICON_DIR
+      is-directory: false
+    - file: hanzi_lookup/.target/release/libhanzi_lookup.so
+      directory: lib/UntitledIBusHandwrite/
+      macro-name: UIBUS_HANDWRITE_HANZI_LOOKUP_DIR
+      is-directory: false

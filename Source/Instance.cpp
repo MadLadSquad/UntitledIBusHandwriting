@@ -3,8 +3,6 @@
 
 UntitledIBusHandwriting::Instance::Instance()
 {
-    // TODO: Remove this in production
-    chdir("/home/i-use-gentoo-btw/Documents/UntitledImGuiFramework/Projects/UntitledIBusHandwriting/cmake-build-relwithdebinfo/");
     initInfo.inlineComponents = { &mainView };
     initInfo.globalData = this;
     initInfo.bGlobalAllocatedOnHeap = false;

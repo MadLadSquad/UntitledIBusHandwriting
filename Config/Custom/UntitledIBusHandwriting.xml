@@ -12,10 +12,10 @@
     <engines>
         <engine>
             <name>UntitledIBusHandwriting</name>
-            <language>bg</language>
+            <language>zh_CN</language>
             <license>MIT</license>
             <author>MadLadSquad &lt;contact@madladsquad.com&gt;</author>
-            <icon>/usr/share/UntitledIBusHandwriting/icons/untitled-ibus-handwriting.png</icon>
+            <icon>/usr/share/UntitledIBusHandwriting/untitled-ibus-handwrite.png</icon>
             <layout>default</layout>
             <longname>UntitledIBusHandwriting</longname>
             <description>The UntitledIBusHandwriting engine</description>

@@ -148,7 +148,7 @@ void UntitledIBusHandwriting::Engine::initIBus(char* executable, bool bIbusAvail
                                       binaryPath, "UntitledIBusHandwriting");
 
        desc = ibus_engine_desc_new("UntitledIBusHandwriting", "handwrite",
-                                   "The UntitledIBusHandwriting engine", "bg", "MIT",
+                                   "The UntitledIBusHandwriting engine", "zh_CN", "MIT",
                                    "contact@madladsquad.com", icondir, "default");
 
        ibus_component_add_engine(component, desc);

@@ -3,8 +3,8 @@
 #include <Engine.hpp>
 #include <Instance.hpp>
 
-#ifndef UIBUS_HANDWRITE_HANZI_LOOKUP
-    #define UIBUS_HANDWRITE_HANZI_LOOKUP "../hanzi_lookup/.target/release/libhanzi_lookup.so"
+#ifndef UIBUS_HANDWRITE_HANZI_LOOKUP_DIR
+    #define UIBUS_HANDWRITE_HANZI_LOOKUP_DIR "../hanzi_lookup/.target/release/libhanzi_lookup.so"
 #endif
 
 UntitledIBusHandwriting::MainView::MainView()
@@ -15,7 +15,7 @@ UntitledIBusHandwriting::MainView::MainView()
 void UntitledIBusHandwriting::MainView::begin()
 {
     beginAutohandle();
-    lib = URLL::dlopen(UIBUS_HANDWRITE_HANZI_LOOKUP);
+    lib = URLL::dlopen(UIBUS_HANDWRITE_HANZI_LOOKUP_DIR"libhanzi_lookup.so");
     if (lib == nullptr)
     {
         Logger::log("Died at loading the library from Rust. Error: ", UVKLog::UVK_LOG_TYPE_ERROR, URLL::dlerror());
