@@ -1,5 +1,6 @@
 #pragma once
 #include <Framework.hpp>
+#include <Generated/Config.hpp>
 #include "MainView.hpp"
 #include "Engine.hpp"
 #include <mutex>

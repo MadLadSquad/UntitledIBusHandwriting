@@ -3,9 +3,13 @@
 
 UntitledIBusHandwriting::Instance::Instance()
 {
-    initInfo.inlineComponents = { &mainView };
-    initInfo.globalData = this;
-    initInfo.bGlobalAllocatedOnHeap = false;
+    initInfo =
+    {
+        .inlineComponents = { &mainView },
+        .globalData = this,
+        .bGlobalAllocatedOnHeap = false,
+        UIMGUI_INIT_INFO_DEFAULT_DIRS,
+    };
 }
 
 void UntitledIBusHandwriting::Instance::begin()
