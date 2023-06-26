@@ -4,7 +4,7 @@
 [![trello](https://img.shields.io/badge/Trello-UDE-blue])](https://trello.com/b/HmfuRY2K/untitleddesktop)
 [![Discord](https://img.shields.io/discord/717037253292982315.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/4wgH8ZE)
 
-![image](https://github.com/MadLadSquad/UntitledIBusHandwriting/assets/40400590/c9f4f7b8-580a-44cf-b090-cdcb8bb546b8)
+![image](https://github.com/MadLadSquad/UntitledIBusHandwriting/assets/40400590/78654353-07c2-4b0b-bf6c-c39daff37ab6)
 
 A multilingual handwriting IM for IBus.
 
