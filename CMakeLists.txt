@@ -117,6 +117,10 @@ if (USE_OS_MODULE)
     option(ENABLE_POLKIT_UTILS "Compile in utilities for dealing with polkit" OFF)
     option(ENABLE_UFONT_UTILS "Compiles in cross-platform utilities for dealing with system fonts" ON)
 
+    if (NOT WIN32)
+        option(ENABLE_XDG_BASEDIR "Compile in the UntitledXDGBasedir library for a XDG Basedir implementation" OFF)
+    endif()
+
     if (ENABLE_DBUS_UTILS)
         find_package(PkgConfig REQUIRED)
         pkg_check_modules(DBUS REQUIRED dbus-1)
@@ -201,13 +205,13 @@ file(GLOB_RECURSE UGUI_SRC "Framework/Core/*.cpp" "Framework/Renderer/*.cpp" ${I
         "Framework/ThirdParty/imgui/core/*.cpp" "Framework/ThirdParty/imgui/misc/cpp/*.cpp" "Framework/C/*.cpp"
         "Framework/ThirdParty/imgui/misc/freetype/*.cpp" "Framework/ThirdParty/logger/*.cpp"
         "Framework/ThirdParty/source-libraries/*.cpp" "Framework/Modules/i18n/src/*.cpp" "Framework/Modules/Modules.hpp"
-        "Framework/Modules/Undo/src/*.cpp" "Framework/Modules/Manager/*.cpp" "Framework/Modules/OS/*.cpp")
+        "Framework/Modules/Undo/src/*.cpp" "Framework/Modules/Manager/*.cpp" "Framework/Modules/OS/src/*.cpp")
 file(GLOB_RECURSE UGUI_HEAD "Framework/Core/*.hpp" "Framework/Renderer/*.hpp" ${IMGUI_HEAD}
         "Framework/ThirdParty/imgui/core/*.h" "Framework/ThirdParty/imgui/misc/cpp/*.h" "Framework/C/*.h"
         "Framework/ThirdParty/imgui/misc/freetype/*.h" "Framework/ThirdParty/logger/*.h" "Framework/C/*.hpp"
         "Framework/ThirdParty/source-libraries/*.h" "Framework/ThirdParty/source-libraries/*.hpp"
         "Framework/Modules/i18n/src/*.hpp" "Framework/Modules/Undo/src/*.hpp" "Framework/Modules/Manager/*.hpp"
-        "Framework/Modules/OS/*.h" "Framework/Modules/OS/*.hpp")
+        "Framework/Modules/OS/src/*.h" "Framework/Modules/OS/src/*.hpp")
 file(GLOB_RECURSE UGUI_APP_SRC "Source/*.cpp")
 file(GLOB_RECURSE UGUI_APP_HEAD "Source/*.hpp" "Generated/Config.hpp")
 file(GLOB_RECURSE EXEC_SRC "")
@@ -271,8 +275,23 @@ if (USE_OS_MODULE)
         file(GLOB_RECURSE UGUI_UEXEC_HEAD )
     endif()
 
-    file(GLOB_RECURSE UGUI_OS_SRC ${UGUI_UEXEC_SRC})
-    file(GLOB_RECURSE UGUI_OS_HEAD ${UGUI_UEXEC_HEAD})
+    if (NOT WIN32)
+        if (ENABLE_XDG_BASEDIR)
+            file(GLOB_RECURSE UGUI_XDG_SRC "Framework/Modules/OS/ThirdParty/UntitledXDGBasedir/*.cpp")
+            file(GLOB_RECURSE UGUI_XDG_HEAD "Framework/Modules/OS/ThirdParty/UntitledXDGBasedir/*.hpp"
+                    "Framework/Modules/OS/ThirdParty/UntitledXDGBasedir/*.h")
+        else()
+            file(GLOB_RECURSE UGUI_XDG_SRC  " ")
+            file(GLOB_RECURSE UGUI_XDG_HEAD  " ")
+        endif()
+    else()
+        file(GLOB_RECURSE UGUI_XDG_SRC  " ")
+        file(GLOB_RECURSE UGUI_XDG_HEAD  " ")
+    endif()
+
+
+    file(GLOB_RECURSE UGUI_OS_SRC ${UGUI_UEXEC_SRC} ${UGUI_XDG_SRC})
+    file(GLOB_RECURSE UGUI_OS_HEAD ${UGUI_UEXEC_HEAD} ${UGUI_XDG_HEAD} )
 else()
     file(GLOB_RECURSE UGUI_OS_SRC )
     file(GLOB_RECURSE UGUI_OS_HEAD )
@@ -442,6 +461,14 @@ if (USE_OS_MODULE)
             target_compile_definitions(UntitledIBusHandwritingLib PRIVATE "UIMGUI_UFONT_UTILS_SUBMODULE_ENABLED")
         endif()
         target_compile_definitions(UntitledIBusHandwriting PRIVATE "UIMGUI_UFONT_UTILS_SUBMODULE_ENABLED")
+    endif()
+    if (NOT WIN32)
+        if (ENABLE_XDG_BASEDIR)
+            target_compile_definitions(UntitledImGuiFramework PRIVATE "UIMGUI_XDG_BASEDIR_SUBMODULE_ENABLED"
+                    "UXDG_CREATE_DIRS" "UXDG_DO_NOT_IGNORE_RELATIVE_DIRS")
+            target_compile_definitions(UntiledIBusHandwritingLib PRIVATE "UIMGUI_XDG_BASEDIR_SUBMODULE_ENABLED")
+            target_compile_definitions(UntiledIBusHandwriting PRIVATE "UIMGUI_XDG_BASEDIR_SUBMODULE_ENABLED")
+        endif()
     endif()
 endif()
 
