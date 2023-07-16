@@ -265,6 +265,14 @@ else()
     file(GLOB_RECURSE UGUI_TOGGLES_HEAD )
 endif()
 
+if (USE_TEXT_UTILS_MODULE)
+    file(GLOB_RECURSE UGUI_TEXT_UTILS_SRC "Framework/Modules/TextUtils/*.cpp")
+    file(GLOB_RECURSE UGUI_TEXT_UTILS_HEAD "Framework/Modules/TextUtils/*.hpp")
+else()
+    file(GLOB_RECURSE UGUI_TEXT_UTILS_SRC )
+    file(GLOB_RECURSE UGUI_TEXT_UTILS_HEAD )
+endif()
+
 if (USE_OS_MODULE)
     if (ENABLE_UEXEC)
         file(GLOB_RECURSE UGUI_UEXEC_SRC "Framework/Modules/OS/ThirdParty/uexec/*.cpp")
@@ -303,10 +311,11 @@ endif()
 
 set(LIBRARY_SOURCES "${UGUI_SRC}" "${UGUI_HEAD}" "Generated/BuildDef.hpp" "${UGUI_IMPLOT_SRC}" "${UGUI_IMPLOT_HEAD}"
         "${UGUI_OS_SRC}" "${UGUI_OS_HEAD}" "${UGUI_TOGGLES_HEAD}" "${UGUI_TOGGLES_SRC}" "${UGUI_SPINNER_HEAD}"
-        "${UGUI_KNOBS_HEAD}" "${UGUI_KNOBS_SRC}" "${UGUI_CLI_SRC}" "${UGUI_CLI_HEAD}")
+        "${UGUI_KNOBS_HEAD}" "${UGUI_KNOBS_SRC}" "${UGUI_CLI_SRC}" "${UGUI_CLI_HEAD}" "${UGUI_TEXT_UTILS_SRC}"
+        "${UGUI_TEXT_UTILS_HEAD}")
 set(EXECUTABLE_SOURCES "Generated/main.cpp" "${UGUI_HEAD}" "${EXEC_SRC}" "Generated/BuildDef.hpp" "${UGUI_IMPLOT_HEAD}"
         "${UGUI_OS_HEAD}" "${UGUI_TOGGLES_HEAD}" "${UGUI_SPINNER_HEAD}" "${UGUI_KNOBS_HEAD}" "${UGUI_CLI_HEAD}"
-        "${UGUI_APP_HEAD}")
+        "${UGUI_APP_HEAD}" "${UGUI_TEXT_UTILS_HEAD}")
 set(APP_LIBRARY_SOURCES "${UGUI_APP_SRC}" "${UGUI_APP_HEAD}")
 if (BUILD_VARIANT_STATIC)
     if (WIN32)
@@ -411,6 +420,14 @@ if (USE_UNDO_MODULE)
         target_compile_definitions(UntitledIBusHandwritingLib PRIVATE "UIMGUI_UNDO_MODULE_ENABLED")
     endif()
     target_compile_definitions(UntitledIBusHandwriting PRIVATE "UIMGUI_UNDO_MODULE_ENABLED")
+endif()
+
+if (USE_TEXT_UTILS_MODULE)
+    target_compile_definitions(UntitledImGuiFramework PRIVATE "UIMGUI_TEXT_UTILS_MODULE_ENABLED")
+    if (NOT WIN32)
+        target_compile_definitions(UntitledIBusHandwritingLib PRIVATE "UIMGUI_TEXT_UTILS_MODULE_ENABLED")
+    endif()
+    target_compile_definitions(UntitledIBusHandwriting PRIVATE "UIMGUI_TEXT_UTILS_MODULE_ENABLED")
 endif()
 
 if (USE_OS_MODULE)
