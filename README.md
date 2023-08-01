@@ -15,8 +15,7 @@ Features:
 1. Fast and accurate character recognition, even when you make mistakes
 
 ## Showcase
-![image](https://github.com/MadLadSquad/UntitledIBusHandwriting/assets/40400590/c1bc9832-ebb6-4fdb-9194-7155c81619e3)
-
+![image](https://github.com/MadLadSquad/UntitledIBusHandwriting/assets/40400590/57042463-cd44-4239-ab4c-26450c2a5c01)
 
 ## Install
 Run clone the source code with submodules and run `ci.sh` to install the application. Note that you might need the following dependencies(Ubuntu as an example):
