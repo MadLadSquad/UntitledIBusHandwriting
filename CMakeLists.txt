@@ -31,6 +31,7 @@ set(UIMGUI_PLATFORM "DESKTOP" CACHE STRING "Can be set to DESKTOP when building 
 # ------------------------------------------------- Add subdirectories -------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 
+option(UIMGUI_INSTALL "Installs all libraries" OFF)
 option(BUILD_VARIANT_STATIC "Builds the Framework, application library(exists only on Unix) and executable into a single
     executable binary" OFF)
 
