@@ -102,7 +102,6 @@ set(YAML_CPP_LIBRARIES_T "yaml-cpp")
 set(YAML_CPP_INCLUDE_DIRS_T "Framework/ThirdParty/yaml-cpp/include/yaml-cpp"
         "Framework/ThirdParty/yaml-cpp/include")
 set(BUILD_SHARED_LIBS OFF)
-add_subdirectory(Framework/Modules/CLIParser/ThirdParty/UntitledCLIParser/ThirdParty/utfcpp)
 
 # Custom section
 find_package(PkgConfig REQUIRED)
@@ -214,6 +213,10 @@ if (USE_CLI_PARSER_MODULE)
         pkg_get_variable(UCLI_COMPILE_DEFS UntitledCLIParser compile_defs)
         list(APPEND VENDOR_COMPILE_DEFS ${UCLI_COMPILE_DEFS})
     endif()
+endif()
+
+if (NOT USE_CLI_PARSER_MODULE OR NOT BUILD_VARIANT_VENDOR)
+    add_subdirectory(Framework/Modules/CLIParser/ThirdParty/UntitledCLIParser/ThirdParty/utfcpp)
 endif()
 
 # ----------------------------------------------------------------------------------------------------------------------
