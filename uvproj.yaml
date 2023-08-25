@@ -2,7 +2,8 @@ name: "UntitledIBusHandwriting"
 version: "1.0.0.0"
 engine-version: "1.0.0.0"
 build-mode-static: false
-build-mode-vendor: true
+build-mode-vendor: false
+system-wide: true
 enabled-modules:
   os: true
   dbus: false

@@ -59,12 +59,7 @@ if (BUILD_VARIANT_VENDOR OR WIN32)
     add_subdirectory(Framework/ThirdParty/freetype)
     set(FREETYPE_LIBRARIES "freetype")
     set(FREETYPE_INCLUDE_DIRS "")
-
-    set(BUILD_SHARED_LIBS ON)
-    add_subdirectory(Framework/ThirdParty/yaml-cpp)
-    set(YAML_CPP_LIBRARIES_T "yaml-cpp")
-    set(YAML_CPP_INCLUDE_DIRS_T "Framework/ThirdParty/yaml-cpp/include/yaml-cpp"
-        "Framework/ThirdParty/yaml-cpp/include")
+    set(BUILD_SHARED_LIBS OFF)
 else()
     find_package(PkgConfig REQUIRED)
     find_package(OpenGL REQUIRED)
@@ -73,14 +68,14 @@ else()
         find_package(X11 REQUIRED)
     endif()
     # Re-enable when yaml-cpp 0.8 is released
-    if (BUILD_VARIANT_STATIC)
-        set(YamlCpp_STATIC ON)
-    endif()
-    include(FindYamlCpp)
-    find_package(YamlCpp REQUIRED)
-    set(YAML_CPP_INCLUDE_DIRS_T "${YamlCpp_INCLUDE_PATH}")
-    set(YAML_CPP_LIBRARIES_T "${YamlCpp_LIBRARY}")
-
+    #if (BUILD_VARIANT_STATIC)
+    #    set(YamlCpp_STATIC ON)
+    #endif()
+    #
+    #include(FindYamlCpp)
+    #find_package(YamlCpp REQUIRED)
+    #set(YAML_CPP_INCLUDE_DIRS_T "${YamlCpp_INCLUDE_PATH}")
+    #set(YAML_CPP_LIBRARIES_T "${YamlCpp_LIBRARY}")
     set(OPENGL_LIBRARIES_T "${OPENGL_gl_LIBRARY}")
     pkg_check_modules(GLFW REQUIRED glfw3)
     if (BUILD_VARIANT_STATIC)
@@ -98,6 +93,14 @@ else()
     set(VULKAN_LIBRARIES_T ${Vulkan_LINK_LIBRARIES})
 endif()
 
+if (NOT BUILD_VARIANT_STATIC)
+    set(BUILD_SHARED_LIBS ON)
+endif()
+
+add_subdirectory(Framework/ThirdParty/yaml-cpp)
+set(YAML_CPP_LIBRARIES_T "yaml-cpp")
+set(YAML_CPP_INCLUDE_DIRS_T "Framework/ThirdParty/yaml-cpp/include/yaml-cpp"
+        "Framework/ThirdParty/yaml-cpp/include")
 set(BUILD_SHARED_LIBS OFF)
 
 # Custom section
