@@ -117,7 +117,6 @@ endif(IBus_FOUND)
 option(USE_OS_MODULE "Use the operating system module" ON)
 if (USE_OS_MODULE)
     option(ENABLE_UEXEC "Compile in the UntitledExec library for a cross-platform method of launching applications" OFF)
-    option(ENABLE_THEMING "Compile in the UDE theme integration system for supporting theming in your application" ON)
     option(ENABLE_UFONT_UTILS "Compiles in cross-platform utilities for dealing with system fonts" ON)
 
     if (NOT WIN32)
@@ -178,14 +177,12 @@ if (USE_OS_MODULE)
             list(APPEND VENDOR_COMPILE_DEFS ${UEXEC_COMPILE_DEFS})
         endif ()
     endif()
-    if (ENABLE_THEMING)
-
-    endif()
     if (ENABLE_UFONT_UTILS)
         find_package(Fontconfig REQUIRED)
     endif()
 endif()
 
+option(USE_THEME_MODULE "Compile in the UDE theme integration system for supporting theming in your application" ON)
 option(USE_I18N_MODULE "Use the i18n module" ON)
 option(USE_UNDO_MODULE "Use the Undo/Redo module" OFF)
 
@@ -324,6 +321,14 @@ else()
     file(GLOB_RECURSE UGUI_TEXT_UTILS_HEAD )
 endif()
 
+if (USE_THEME_MODULE)
+    file(GLOB_RECURSE UTHEME_SRC "Framework/Modules/Theming/*.cpp")
+    file(GLOB_RECURSE UTHEME_HEAD "Framework/Modules/Theming/*.hpp")
+else()
+    file(GLOB_RECURSE UTHEME_SRC )
+    file(GLOB_RECURSE UTHEME_HEAD )
+endif()
+
 if (BUILD_MODE_VENDOR)
     foreach(f IN ITEMS ${ENABLED_LIBRARIES})
         get_target_property(INCLUDE_DIRS ${f} INCLUDE_DIRECTORIES)
@@ -337,10 +342,11 @@ endif()
 
 set(LIBRARY_SOURCES "${UGUI_SRC}" "${UGUI_HEAD}" "Generated/BuildDef.hpp" "${UGUI_IMPLOT_SRC}" "${UGUI_IMPLOT_HEAD}"
         "${UGUI_TOGGLES_HEAD}" "${UGUI_TOGGLES_SRC}" "${UGUI_SPINNER_HEAD}" "${UGUI_KNOBS_HEAD}" "${UGUI_KNOBS_SRC}"
-        "${UGUI_CLI_SRC}" "${UGUI_CLI_HEAD}" "${UGUI_TEXT_UTILS_SRC}" "${UGUI_TEXT_UTILS_HEAD}" "${LM_INCLUDE_DIRS}")
+        "${UGUI_CLI_SRC}" "${UGUI_CLI_HEAD}" "${UGUI_TEXT_UTILS_SRC}" "${UGUI_TEXT_UTILS_HEAD}" "${LM_INCLUDE_DIRS}"
+        "${UTHEME_SRC}" "${UTHEME_HEAD}")
 set(EXECUTABLE_SOURCES "Generated/main.cpp" "${UGUI_HEAD}" "${EXEC_SRC}" "Generated/BuildDef.hpp" "${UGUI_IMPLOT_HEAD}"
         "${UGUI_TOGGLES_HEAD}" "${UGUI_SPINNER_HEAD}" "${UGUI_KNOBS_HEAD}" "${UGUI_CLI_HEAD}" "${UGUI_APP_HEAD}"
-        "${UGUI_TEXT_UTILS_HEAD}")
+        "${UGUI_TEXT_UTILS_HEAD}" "${UTHEME_HEAD}")
 set(APP_LIBRARY_SOURCES "${UGUI_APP_SRC}" "${UGUI_APP_HEAD}" "${LM_INCLUDE_DIRS}")
 if (BUILD_VARIANT_STATIC)
     if (WIN32)
@@ -410,12 +416,13 @@ if (USE_TEXT_UTILS_MODULE)
     enable_module_defs(UIMGUI_TEXT_UTILS_MODULE_ENABLED)
 endif()
 
+if (USE_THEME_MODULE)
+    enable_module_defs(UIMGUI_THEME_MODULE_ENABLED)
+endif()
+
 if (USE_OS_MODULE)
     enable_module_defs(UIMGUI_OS_MODULE_ENABLED)
 
-    if (ENABLE_THEMING)
-        enable_module_defs(UIMGUI_THEME_SUBMODULE_ENABLED)
-    endif()
     if (ENABLE_UFONT_UTILS)
         enable_module_defs(UIMGUI_UFONT_UTILS_SUBMODULE_ENABLED)
     endif()
