@@ -214,6 +214,23 @@ if (NOT USE_CLI_PARSER_MODULE OR NOT BUILD_VARIANT_VENDOR)
     add_subdirectory(Framework/Modules/CLIParser/ThirdParty/UntitledCLIParser/ThirdParty/utfcpp)
 endif()
 
+if (USE_I18N_MODULE)
+    if (BUILD_VARIANT_VENDOR)
+        set(USE_PRECONFIGURED_YAML ON)
+        add_subdirectory(Framework/Modules/i18n/ThirdParty/UntitledI18N)
+        list(APPEND ENABLED_LIBRARIES UntitledI18N)
+    else()
+        find_package(PkgConfig REQUIRED)
+        pkg_check_modules(UntitledI18N REQUIRED UntitledI18N)
+
+        link_directories(${UntitledI18N_LIBRARY_DIRS})
+        list(APPEND LM_INCLUDE_DIRS ${UntitledI18N_INCLUDE_DIRS})
+        list(APPEND ENABLED_LIBRARIES UntitledI18N)
+        pkg_get_variable(UI18N_COMPILE_DEFS UntitledI18N compile_defs)
+        list(APPEND VENDOR_COMPILE_DEFS ${UI18N_COMPILE_DEFS})
+    endif()
+endif()
+
 # ----------------------------------------------------------------------------------------------------------------------
 # ---------------------------------------------- Add files and directories ---------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -386,10 +403,6 @@ endif()
 
 if (BUILD_VARIANT_VENDOR)
     enable_module_defs(UIMGUI_BUILD_VARIANT_VENDOR)
-endif()
-
-if (USE_I18N_MODULE)
-    enable_module_defs(UIMGUI_I18N_MODULE_ENABLED)
 endif()
 
 if (USE_PLOTTING_MODULE)
