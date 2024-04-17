@@ -11,8 +11,8 @@ cd ../ || exit                      # Go back to the project directory
 # Even though normal projects are installed under Framework/Projects/ nothing really stops us from changing that
 # directory to the current setup since we only need the symlinks to be there.
 # Symlink the Framework and UVKBuildTool
-ln -rs UntitledImGuiFramework/Framework Framework 2> /dev/null || cp UntitledImGuiFramework/Framework . -r 2> /dev/null
-ln -rs UntitledImGuiFramework/UVKBuildTool UVKBuildTool 2> /dev/null || cp UntitledImGuiFramework/UVKBuildTool . -r 2> /dev/null
+cmd //c mklink //d Framework UntitledImGuiFramework\\Framework || ln -rs UntitledImGuiFramework/Framework Framework 2> /dev/null || cp UntitledImGuiFramework/Framework . -r 2> /dev/null
+cmd //c mklink //d UVKBuildTool UntitledImGuiFramework\\UVKBuildTool || ln -rs UntitledImGuiFramework/UVKBuildTool UVKBuildTool 2> /dev/null || cp UntitledImGuiFramework/UVKBuildTool . -r 2> /dev/null
 
 mkdir Generated/ || exit
 
