@@ -22,9 +22,8 @@ Other requirements:
 1. A recent version of the rust programming language and cargo
 1. Developer packages for IBus may be required if your distribution does not ship them as part of the main IBus package
 
-This is a standard [UntitledImGuiFramework](https://github.com/MadLadSquad/UntitledImGuiFramework) application, 
-documentation on how to install can be found 
-[here](https://github.com/MadLadSquad/UntitledImGuiFramework/wiki/Distributing-the-framework-in-a-package-manager#exporting-for-production-manually).
+This is a standard [UntitledImGuiFramework](https://github.com/MadLadSquad/UntitledImGuiFramework) project. Building instructions can be found 
+[here](https://github.com/MadLadSquad/UntitledImGuiFramework/wiki/Collaborating-on-a-project-with-the-framework#setting-up-another-persons-project).
 
 Before compiling and installing, make sure that you have compiled beforehand `hanzi_lookup`. This can be done like this:
 ```sh
