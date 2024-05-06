@@ -43,6 +43,7 @@ Framework/
 UVKBuildTool
 Framework
 export.sh
+CMakeLists.txt.prodexport.fail
 
 Installers/GUI/cmake-build-*/
 Managers/GUI/cmake-build-*/
