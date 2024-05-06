@@ -123,7 +123,7 @@ option(USE_OS_MODULE "Use the operating system module" ON)
 if (USE_OS_MODULE)
     option(ENABLE_UEXEC "Compile in the UntitledExec library for a cross-platform method of launching applications" OFF)
     option(ENABLE_UFONT_UTILS "Compiles in cross-platform utilities for dealing with system fonts" ON)
-	#option(ENABLE_UOPEN "Enables the UntitledOpen library, that opens URLs and files with a default application" OFF)
+    option(ENABLE_UOPEN "Enables the UntitledOpen library, that opens URLs and files with a default application" OFF)
 
     if (NOT WIN32)
         option(ENABLE_XDG_BASEDIR "Compile in the UntitledXDGBasedir library for a XDG Basedir implementation" OFF)
@@ -147,12 +147,7 @@ if (USE_OS_MODULE)
         if (ENABLE_DBUS_UTILS)
             find_package(PkgConfig REQUIRED)
 
-            if (ENABLE_DBUS_UTILS)
-                pkg_check_modules(DBUS REQUIRED dbus-1)
-
-                link_directories(${DBUS_LIBRARY_DIRS})
-                include_directories(${DBUS_INCLUDE_DIRS})
-
+            if (BUILD_VARIANT_VENDOR)
                 add_subdirectory(Framework/Modules/OS/ThirdParty/UntitledDBusUtils)
                 list(APPEND ENABLED_LIBRARIES UntitledDBusUtils)
             else()
