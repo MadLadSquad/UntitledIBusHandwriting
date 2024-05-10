@@ -24,7 +24,8 @@ jobs:
         shell: bash
         run: |
           rm -rf .git/
-          cd hanzi_lookup && cargo build --release && cd ..
+          cd hanzi_lookup
+          cargo vendor || (ls hanzi_lookup && exit)
           tar cfJ untitled-ibus-handwriting.tar.xz . || echo "Might have failed"
       - name: Create Release
         uses: softprops/action-gh-release@master
