@@ -14,7 +14,7 @@ jobs:
         with:
           lfs: true
           submodules: true
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - uses: dtolnay/rust-toolchain@stable
       - name: Checkout submodules
         shell: bash
         run: |
