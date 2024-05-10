@@ -34,6 +34,6 @@ additional-installs:
       macro-name: UIBUS_HANDWRITE_ICON_DIR
       is-directory: false
     - file: hanzi_lookup/.target/release/libhanzi_lookup.so
-      directory: lib/UntitledIBusHandwrite/
+      directory: lib64/UntitledIBusHandwrite/
       macro-name: UIBUS_HANDWRITE_HANZI_LOOKUP_DIR
       is-directory: false
