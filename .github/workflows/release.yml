@@ -10,10 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           lfs: true
           submodules: true
+      - uses: dtolnay/rust-toolchain@stable
       - name: Checkout submodules
         shell: bash
         run: |
@@ -23,6 +24,9 @@ jobs:
         shell: bash
         run: |
           rm -rf .git/
+          cd hanzi_lookup || exit
+          cargo vendor || (ls hanzi_lookup && exit)
+          cd .. || exit
           tar cfJ untitled-ibus-handwriting.tar.xz . || echo "Might have failed"
       - name: Create Release
         uses: softprops/action-gh-release@master
