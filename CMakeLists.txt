@@ -229,9 +229,7 @@ if (USE_CLI_PARSER_MODULE)
     endif()
 endif()
 
-if (NOT USE_CLI_PARSER_MODULE OR NOT BUILD_VARIANT_VENDOR)
-    add_subdirectory(Framework/Modules/CLIParser/ThirdParty/UntitledCLIParser/ThirdParty/utfcpp)
-endif()
+add_subdirectory(Framework/ThirdParty/utfcpp)
 
 if (USE_I18N_MODULE)
     if (BUILD_VARIANT_VENDOR)
