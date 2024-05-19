@@ -257,7 +257,7 @@ include_directories("Source/" "Framework/" "Framework/ThirdParty/imgui/core/" "F
         "Framework/ThirdParty/logger/src/" "Framework/ThirdParty/source-libraries/" "Framework/Modules" "."
         "Framework/Modules/CLIParser/ThirdParty/UntitledCLIParser/ThirdParty/"  ${YAML_CPP_INCLUDE_DIRS_T}
         "Framework/ThirdParty/vulkan-headers/include" ${GLFW_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${FREETYPE_INCLUDE_DIRS}
-        ${LM_INCLUDE_DIRS})
+        "Framework/ThirdParty/" ${LM_INCLUDE_DIRS})
 
 
 link_directories("ThirdParty/glew/lib" "Framework/ThirdParty/vulkan" UVKBuildTool/build)
