@@ -18,6 +18,7 @@ if (WIN32)
     set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
     set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
 endif()
+set(VULKAN_HEADERS_ENABLE_MODULE FALSE)
 
 project(UntitledImGuiFramework)
 if (NOT WIN32)
