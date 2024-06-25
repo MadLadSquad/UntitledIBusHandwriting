@@ -22,6 +22,12 @@ project(UntitledIBusHandwriting)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_STANDARD 99)
+
+if (APPLE)
+    enable_language(OBJC)
+    enable_language(OBJCXX)
+endif()
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/Framework/cmake/")
 
 set(UIMGUI_PLATFORM "DESKTOP" CACHE STRING "Can be set to DESKTOP when building for WIN32, Linux, Mac, etc. ANDROID for
@@ -303,7 +309,7 @@ else()
     message(FATAL_ERROR "The UIMGUI_PLATFORM variable is not set to a compatible value!")
 endif()
 
-file(GLOB_RECURSE UGUI_SRC "Framework/Core/*.cpp" "Framework/Renderer/*.cpp" ${IMGUI_SRC}
+file(GLOB_RECURSE UGUI_SRC "Framework/Core/*.cpp" "Framework/Renderer/*.cpp" ${IMGUI_SRC} "Framework/Renderer/*.h"
         "Framework/ThirdParty/imgui/core/*.cpp" "Framework/ThirdParty/imgui/misc/cpp/*.cpp" "Framework/C/*.cpp"
         "Framework/ThirdParty/imgui/misc/freetype/*.cpp" "Framework/ThirdParty/logger/*.cpp"
         "Framework/ThirdParty/source-libraries/*.cpp" "Framework/Modules/i18n/src/*.cpp" "Framework/Modules/Modules.hpp"
@@ -314,9 +320,15 @@ file(GLOB_RECURSE UGUI_HEAD "Framework/Core/*.hpp" "Framework/Renderer/*.hpp" ${
         "Framework/ThirdParty/source-libraries/*.h" "Framework/ThirdParty/source-libraries/*.hpp"
         "Framework/Modules/i18n/src/*.hpp" "Framework/Modules/Undo/src/*.hpp" "Framework/Modules/Manager/*.hpp"
         "Framework/Modules/OS/src/*.h" "Framework/Modules/OS/src/*.hpp")
+
 file(GLOB_RECURSE UGUI_APP_SRC "Source/*.cpp")
 file(GLOB_RECURSE UGUI_APP_HEAD "Source/*.hpp" "Generated/Config.hpp")
+
 file(GLOB_RECURSE EXEC_SRC "")
+
+if (APPLE)
+    file(GLOB_RECURSE APPLE_SRC "Framework/Renderer/*.mm" "Framework/Renderer/*.m")
+endif()
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------- Modify files for modules ---------------------------------------------
@@ -387,7 +399,7 @@ endif()
 set(LIBRARY_SOURCES "${UGUI_SRC}" "${UGUI_HEAD}" "Generated/BuildDef.hpp" "${UGUI_IMPLOT_SRC}" "${UGUI_IMPLOT_HEAD}"
         "${UGUI_TOGGLES_HEAD}" "${UGUI_TOGGLES_SRC}" "${UGUI_SPINNER_HEAD}" "${UGUI_KNOBS_HEAD}" "${UGUI_KNOBS_SRC}"
         "${UGUI_CLI_SRC}" "${UGUI_CLI_HEAD}" "${UGUI_TEXT_UTILS_SRC}" "${UGUI_TEXT_UTILS_HEAD}" "${LM_INCLUDE_DIRS}"
-        "${UTHEME_SRC}" "${UTHEME_HEAD}")
+        "${UTHEME_SRC}" "${UTHEME_HEAD}" "${APPLE_SRC}")
 set(EXECUTABLE_SOURCES "Generated/main.cpp" "${UGUI_HEAD}" "${EXEC_SRC}" "Generated/BuildDef.hpp" "${UGUI_IMPLOT_HEAD}"
         "${UGUI_TOGGLES_HEAD}" "${UGUI_SPINNER_HEAD}" "${UGUI_KNOBS_HEAD}" "${UGUI_CLI_HEAD}" "${UGUI_APP_HEAD}"
         "${UGUI_TEXT_UTILS_HEAD}" "${UTHEME_HEAD}")
@@ -508,10 +520,15 @@ else()
     target_link_libraries(UntitledIBusHandwriting UntitledImGuiFramework UntitledIBusHandwritingLib ${YAML_CPP_LIBRARIES_T} dl
             util)
 
+    if (APPLE)
+        target_link_libraries(UntitledImGuiFramework "-framework Cocoa" "-framework IOKit" "-framework CoreFoundation"
+                "-framework QuartzCore")
+    endif ()
+
     foreach(f IN ITEMS ${ENABLED_LIBRARIES})
         target_link_libraries(UntitledIBusHandwritingLib ${f})
     endforeach()
-    
+
     if (USE_OS_MODULE)
         if (ENABLE_DBUS_UTILS)
             target_link_libraries(UntitledImGuiFramework ${DBUS_LIBRARIES})
