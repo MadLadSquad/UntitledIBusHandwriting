@@ -13,9 +13,3 @@ function(custom_compile_step)
         target_link_libraries(${APP_LIB_TARGET} ${IBus_LIBRARIES})
     endif()
 endfunction()
-
-set(USE_OS_MODULE ON)
-set(ENABLE_UFONT_UTILS ON)
-
-set(USE_THEME_MODULE ON)
-set(USE_I18N_MODULE ON)
