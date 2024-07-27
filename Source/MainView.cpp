@@ -70,7 +70,7 @@ void UntitledIBusHandwriting::MainView::tick(float deltaTime)
         undoTmpStroke.clear();
     }
     ImGui::SameLine();
-    if (ImGui::Button("Clear") || UImGui::Input::getKey(Keys::Escape) == Keys::KeyPressed)
+    if (ImGui::Button("Clear") || UImGui::Input::getKey(Keys_Escape) == Keys_KeyPressed)
     {
         stagingBuffer.clear();
         data->characters.clear();
