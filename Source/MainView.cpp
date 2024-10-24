@@ -18,19 +18,19 @@ void UntitledIBusHandwriting::MainView::begin()
     lib = URLL::dlopen(UIBUS_HANDWRITE_HANZI_LOOKUP_DIR"libhanzi_lookup.so");
     if (lib == nullptr)
     {
-        Logger::log("Died at loading the library from Rust. Error: ", UVKLog::UVK_LOG_TYPE_ERROR, URLL::dlerror());
+        Logger::log("Died at loading the library from Rust. Error: ", ULOG_LOG_TYPE_ERROR, URLL::dlerror());
         UImGui::Instance::shutdown();
     }
 
     if (URLL::dlsym(lib, "c_lib_main", loadData) != lib)
     {
-        Logger::log("Died at loading c_lib_main from Rust. Error: ", UVKLog::UVK_LOG_TYPE_ERROR, URLL::dlerror());
+        Logger::log("Died at loading c_lib_main from Rust. Error: ", ULOG_LOG_TYPE_ERROR, URLL::dlerror());
         UImGui::Instance::shutdown();
         return;
     }
     if (URLL::dlsym(lib, "c_lib_main_cleanup", deallocateLoadedData) != lib)
     {
-        Logger::log("Died at loading c_lib_main_cleanup from Rust. Error: ", UVKLog::UVK_LOG_TYPE_ERROR, URLL::dlerror());
+        Logger::log("Died at loading c_lib_main_cleanup from Rust. Error: ", ULOG_LOG_TYPE_ERROR, URLL::dlerror());
         UImGui::Instance::shutdown();
         return;
     }
