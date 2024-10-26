@@ -33,9 +33,7 @@
 .vs/
 .idea/
 build/
-cmake-build-debug/
-cmake-build-release/
-cmake-build-relwithdebinfo/
+cmake-build-*/
 Generated/
 Exported/
 UVKBuildTool/

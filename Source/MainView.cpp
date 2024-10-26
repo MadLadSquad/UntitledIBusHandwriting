@@ -7,12 +7,7 @@
     #define UIBUS_HANDWRITE_HANZI_LOOKUP_DIR "../hanzi_lookup/.target/release/libhanzi_lookup.so"
 #endif
 
-UntitledIBusHandwriting::MainView::MainView()
-{
-
-}
-
-void UntitledIBusHandwriting::MainView::begin()
+void UntitledIBusHandwriting::MainView::begin() noexcept
 {
     beginAutohandle();
     lib = URLL::dlopen(UIBUS_HANDWRITE_HANZI_LOOKUP_DIR"libhanzi_lookup.so");
@@ -34,18 +29,18 @@ void UntitledIBusHandwriting::MainView::begin()
         UImGui::Instance::shutdown();
         return;
     }
-    data = (Instance*)UImGui::Instance::getGlobal();
+    data = static_cast<Instance*>(UImGui::Instance::getGlobal());
 }
 
-void UntitledIBusHandwriting::MainView::tick(float deltaTime)
+void UntitledIBusHandwriting::MainView::tick(const float deltaTime) noexcept
 {
     tickAutohandle(deltaTime);
 
-    static std::vector<std::vector<UImGui::FVector2>> pp;
-    static std::string saveString;
-    static std::string resultString;
+    static UImGui::TVector<UImGui::TVector<UImGui::FVector2>> pp;
+    static UImGui::FString saveString;
+    static UImGui::FString resultString;
 
-    static std::vector<UImGui::FVector2> undoTmpStroke;
+    static UImGui::TVector<UImGui::FVector2> undoTmpStroke;
 
     static ImVec2 scrolling(0.0f, 0.0f);
     static bool adding_line = false;
@@ -54,7 +49,7 @@ void UntitledIBusHandwriting::MainView::tick(float deltaTime)
 
     ImGui::Text("Colour:");
     ImGui::SameLine();
-    ImGui::ColorEdit3("##Color", (float*)&colours, ImGuiColorEditFlags_NoInputs);
+    ImGui::ColorEdit3("##Color", reinterpret_cast<float*>(&colours), ImGuiColorEditFlags_NoInputs);
 
     ImGui::SameLine();
 
@@ -103,21 +98,21 @@ void UntitledIBusHandwriting::MainView::tick(float deltaTime)
     }
 
     // Using InvisibleButton() as a convenience 1) it will advance the layout cursor and 2) allows us to use IsItemHovered()/IsItemActive()
-    ImVec2 canvas_p0 = ImGui::GetCursorScreenPos();      // ImDrawList API uses screen coordinates!
+    const ImVec2 canvas_p0 = ImGui::GetCursorScreenPos();      // ImDrawList API uses screen coordinates!
     ImVec2 canvas_sz = ImGui::GetContentRegionAvail();   // Resize canvas to what's available
     if (canvas_sz.x < 50.0f) canvas_sz.x = 50.0f;
     if (canvas_sz.y < 50.0f) canvas_sz.y = 50.0f;
-    ImVec2 canvas_p1 = ImVec2(canvas_p0.x + canvas_sz.x, canvas_p0.y + canvas_sz.y);
+    const auto canvas_p1 = ImVec2(canvas_p0.x + canvas_sz.x, canvas_p0.y + canvas_sz.y);
 
     // Draw border and background color
-    ImGuiIO& io = ImGui::GetIO();
+    const ImGuiIO& io = ImGui::GetIO();
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     draw_list->AddRectFilled(canvas_p0, canvas_p1, IM_COL32(50, 50, 50, 255));
     draw_list->AddRect(canvas_p0, canvas_p1, IM_COL32(255, 255, 255, 255));
 
     // Create an invisible button to serve as our canvas click field
     ImGui::InvisibleButton("canvas", canvas_sz, ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight);
-    ImVec2 origin(canvas_p0.x + scrolling.x, canvas_p0.y + scrolling.y); // Lock scrolled origin
+    const ImVec2 origin(canvas_p0.x + scrolling.x, canvas_p0.y + scrolling.y); // Lock scrolled origin
     const UImGui::FVector2 mouse_pos_in_canvas = { io.MousePos.x - origin.x, io.MousePos.y - origin.y };
 
     // Add first and second point
@@ -125,7 +120,6 @@ void UntitledIBusHandwriting::MainView::tick(float deltaTime)
     {
         pp.emplace_back();
         pp.back().push_back(mouse_pos_in_canvas);
-        //pp.back().push_back(mouse_pos_in_canvas);
         adding_line = true;
     }
 
@@ -155,7 +149,7 @@ void UntitledIBusHandwriting::MainView::tick(float deltaTime)
                 // we sanitize strings by reducing duplicate coordinates in neighboring positions, [[[x,y],[x,y]]] is
                 // still a type of behaviour we might observe. Because of this, we create this temporary FVector2
                 // string that we can use to check if we only have 1 point
-                std::string tmpArrayAccum;
+                UImGui::FString tmpArrayAccum;
                 size_t insertionCount = 0;
                 for (auto& f : a)
                 {
@@ -164,7 +158,7 @@ void UntitledIBusHandwriting::MainView::tick(float deltaTime)
                     {
                         // Unique point, increase insertion count
                         insertionCount++;
-                        // Limit points to 254 since the undelying implementation uses Rust's u8 type = uint8_t
+                        // Limit points to 254 since the underlying implementation uses Rust's u8 type = uint8_t
                         if (abs(f.x) >= 254.0f)
                             f.x = 254.0f;
                         if (abs(f.y) >= 254.0f)
@@ -199,16 +193,16 @@ void UntitledIBusHandwriting::MainView::tick(float deltaTime)
             data->characters.clear();
 
             // Send the string to Rust and request 16 characters as a result
-            auto str = loadData(16, saveString.c_str());
-            resultString = std::string(str);
+            const auto str = loadData(16, saveString.c_str());
+            resultString = UImGui::FString(str);
 
-            // Create a temporary to store each unicode character
-            std::u32string tmp;
+            // Create a temporary to store each Unicode character
+            UImGui::FString32 tmp;
             tmp.resize(1);
 
-            // Iterators for iterating the unicode string returned by Rust
-            utf8::iterator begin(resultString.begin(), resultString.begin(), resultString.end());
-            utf8::iterator end(resultString.end(), resultString.begin(), resultString.end());
+            // Iterators for iterating the Unicode string returned by Rust
+            const utf8::iterator begin(resultString.begin(), resultString.begin(), resultString.end());
+            const utf8::iterator end(resultString.end(), resultString.begin(), resultString.end());
             for (auto i = begin; i != end; ++i)
             {
                 // Create characters array
@@ -216,7 +210,7 @@ void UntitledIBusHandwriting::MainView::tick(float deltaTime)
                 data->characters.push_back(utf8::utf32to8(tmp));
             }
 
-            // Copy the staging buffer so that the ibus thread can take advantage of the newly found data
+            // Copy the staging buffer so that the IBus thread can take advantage of the newly found data
             stagingBuffer = data->characters;
             // Send string back to Rust for the memory to be freed
             deallocateLoadedData(str);
@@ -224,22 +218,14 @@ void UntitledIBusHandwriting::MainView::tick(float deltaTime)
     }
     draw_list->PushClipRect(canvas_p0, canvas_p1, true);
     for (auto& a : pp)
-    {
         for (int n = 1; n < a.size(); ++n)
             draw_list->AddLine(ImVec2(origin.x + a[n].x, origin.y + a[n].y), ImVec2(origin.x + a[n - 1].x, origin.y + a[n - 1].y), ImGui::ColorConvertFloat4ToU32(colours), 5.0f);
-    }
 
     draw_list->PopClipRect();
 }
 
-void UntitledIBusHandwriting::MainView::end()
+void UntitledIBusHandwriting::MainView::end() noexcept
 {
     endAutohandle();
     URLL::dlclose(lib);
 }
-
-UntitledIBusHandwriting::MainView::~MainView()
-{
-
-}
-

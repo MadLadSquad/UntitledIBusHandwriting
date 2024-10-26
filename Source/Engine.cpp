@@ -33,17 +33,17 @@ namespace UntitledIBusHandwriting
 
     [[maybe_unused]] static void engine_class_init(IBusCustomEngineClass* klass)
     {
-        IBusObjectClass* ibus_object_class = IBUS_OBJECT_CLASS (klass);
-        IBusEngineClass* engine_class = IBUS_ENGINE_CLASS (klass);
+        const auto ibus_object_class = IBUS_OBJECT_CLASS (klass);
+        const auto engine_class = IBUS_ENGINE_CLASS (klass);
 
-        ibus_object_class->destroy = (IBusObjectDestroyFunc)engine_destroy;
+        ibus_object_class->destroy = reinterpret_cast<IBusObjectDestroyFunc>(engine_destroy);
 
         engine_class->process_key_event = engine_process_key_event;
-        engine_class->disable = (ibus_engine_callback)engine_disable;
-        engine_class->enable = (ibus_engine_callback)engine_enable;
-        engine_class->focus_in = (ibus_engine_callback)engine_focus_in;
-        engine_class->focus_out = (ibus_engine_callback)engine_focus_out;
-        engine_class->reset = (ibus_engine_callback)engine_reset;
+        engine_class->disable = reinterpret_cast<ibus_engine_callback>(engine_disable);
+        engine_class->enable = reinterpret_cast<ibus_engine_callback>(engine_enable);
+        engine_class->focus_in = reinterpret_cast<ibus_engine_callback>(engine_focus_in);
+        engine_class->focus_out = reinterpret_cast<ibus_engine_callback>(engine_focus_out);
+        engine_class->reset = reinterpret_cast<ibus_engine_callback>(engine_reset);
         engine_class->property_activate = property_activate;
 
         klass->commit_text = engine_commit_text;
@@ -51,14 +51,14 @@ namespace UntitledIBusHandwriting
 
     [[maybe_unused]] static void engine_init(IBusCustomEngine* self)
     {
-        auto instance = (UntitledIBusHandwriting::Instance*)UImGui::Instance::getGlobal();
+        const auto instance = static_cast<UntitledIBusHandwriting::Instance*>(UImGui::Instance::getGlobal());
         instance->initInfo.globalData = self;
     }
 
     static void engine_destroy(IBusCustomEngine* engine)
     {
         engine_disable(engine);
-        IBUS_OBJECT_CLASS(engine_parent_class)->destroy((IBusObject*)engine);
+        IBUS_OBJECT_CLASS(engine_parent_class)->destroy(reinterpret_cast<IBusObject*>(engine));
         UImGui::Instance::shutdown();
     }
 
@@ -74,17 +74,11 @@ namespace UntitledIBusHandwriting
 
     static void engine_focus_in(IBusCustomEngine* engine)
     {
-        auto* en = IBUS_ENGINE(engine);
+        const auto* en = IBUS_ENGINE(engine);
         if (en->cursor_area.x == 0 && en->cursor_area.y == 0)
             return;
 
-        auto y = static_cast<float>(en->cursor_area.y + en->cursor_area.height);
-
-        // This is to ensure that on input bars at the bottom of the screen, we don't
-        if ((y + UImGui::Window::windowSize().y) > 0)
-        {
-
-        }
+        const auto y = static_cast<float>(en->cursor_area.y + en->cursor_area.height);
         UImGui::Window::setCurrentWindowPosition({ static_cast<float>(en->cursor_area.x), y });
     }
 
@@ -100,34 +94,31 @@ namespace UntitledIBusHandwriting
     {
     }
 
-    gboolean engine_commit_text(IBusCustomEngine* engine, int index)
+    gboolean engine_commit_text(IBusCustomEngine* engine, const int index)
     {
         ibus_engine_commit_text(IBUS_ENGINE(engine), ibus_text_new_from_string(stagingBuffer[index].c_str()));
         return true;
     }
 
-    static gboolean engine_process_key_event(IBusEngine* engine, guint keyval, guint, guint modifiers)
+    static gboolean engine_process_key_event(IBusEngine* engine, const guint keyval, guint, const guint modifiers)
     {
-        auto* handwrite = (IBusCustomEngine*)engine;
+        auto* handwrite = reinterpret_cast<IBusCustomEngine*>(engine);
 
         if (modifiers & IBUS_RELEASE_MASK)
             return true;
 
         if (keyval >= IBUS_KEY_0 && keyval <= IBUS_KEY_9)
             return engine_commit_text(handwrite, static_cast<int>(keyval - IBUS_KEY_0));
-        else if (keyval >= IBUS_KEY_a && keyval <= IBUS_KEY_f)
+        if (keyval >= IBUS_KEY_a && keyval <= IBUS_KEY_f)
             return engine_commit_text(handwrite, static_cast<int>((keyval - IBUS_KEY_a) + (IBUS_KEY_9 - IBUS_KEY_0) + 1));
         return false;
     }
 }
 
-void UntitledIBusHandwriting::Engine::initIBus(char* executable, bool bIbusAvailable) noexcept
+void UntitledIBusHandwriting::Engine::initIBus(const char* executable, const bool bIbusAvailable) noexcept
 {
    IBusComponent* component;
-   IBusEngineDesc* desc;
    static IBusFactory* factory = nullptr;
-
-   // TODO: Make this non-hardcoded and use the relevant variables
    static constexpr char icondir[4096]= UIBUS_HANDWRITE_DATA_DIR"icons/untitled-ibus-handwriting.png";
 
    ibus_init();
@@ -140,14 +131,13 @@ void UntitledIBusHandwriting::Engine::initIBus(char* executable, bool bIbusAvail
 
    if (!bIbusAvailable)
    {
-       char* binaryPath;
-       binaryPath = realpath(executable, nullptr);
+       char* binaryPath = realpath(executable, nullptr);
 
        component = ibus_component_new("org.freedesktop.IBus.UntitledIBusHandwriting",
                                       "The UntitledIBusHandwriting engine", "1.0.0.0", "MIT", "contact@madladsquad.com", "https://github.com/MadLadSquad/UntitledIBusHandwriting/",
                                       binaryPath, "UntitledIBusHandwriting");
 
-       desc = ibus_engine_desc_new("UntitledIBusHandwriting", "handwrite",
+       IBusEngineDesc* desc = ibus_engine_desc_new("UntitledIBusHandwriting", "handwrite",
                                    "The UntitledIBusHandwriting engine", "zh_CN", "MIT",
                                    "contact@madladsquad.com", icondir, "default");
 

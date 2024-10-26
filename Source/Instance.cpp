@@ -1,7 +1,7 @@
 #include "Instance.hpp"
 #include "Engine.hpp"
 
-UntitledIBusHandwriting::Instance::Instance()
+UntitledIBusHandwriting::Instance::Instance() noexcept
 {
     initInfo =
     {
@@ -12,7 +12,7 @@ UntitledIBusHandwriting::Instance::Instance()
     };
 }
 
-void UntitledIBusHandwriting::Instance::begin()
+void UntitledIBusHandwriting::Instance::begin() noexcept
 {
     beginAutohandle();
     UImGui::Window::Platform::setWindowAlwaysOnTop();
@@ -28,24 +28,19 @@ void UntitledIBusHandwriting::Instance::begin()
     });
 }
 
-void UntitledIBusHandwriting::Instance::tick(float deltaTime)
+void UntitledIBusHandwriting::Instance::tick(const float deltaTime) noexcept
 {
     tickAutohandle(deltaTime);
 }
 
-void UntitledIBusHandwriting::Instance::end()
+void UntitledIBusHandwriting::Instance::end() noexcept
 {
     endAutohandle();
     ibus_quit();
     ibusThread.join();
 }
 
-UntitledIBusHandwriting::Instance::~Instance()
-{
-
-}
-
-void UntitledIBusHandwriting::Instance::onEventConfigureStyle(ImGuiStyle& style, ImGuiIO& io)
+void UntitledIBusHandwriting::Instance::onEventConfigureStyle(ImGuiStyle& style, ImGuiIO& io) noexcept
 {
     io.Fonts->AddFontFromFileTTF(UIMGUI_CONTENT_DIR"NotoSansCJK-Regular.ttc", 18.0f, nullptr, io.Fonts->GetGlyphRangesChineseFull());
 }

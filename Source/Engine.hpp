@@ -25,7 +25,7 @@ namespace UntitledIBusHandwriting
     public:
         Engine() = default;
 
-        void initIBus(char* executable, bool bIbusAvailable) noexcept;
+        void initIBus(const char* executable, bool bIbusAvailable) noexcept;
         static void* shutdown() noexcept;
     private:
         IBusBus* bus = nullptr;

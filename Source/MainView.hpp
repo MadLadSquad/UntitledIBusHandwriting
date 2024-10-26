@@ -4,14 +4,14 @@
 namespace UntitledIBusHandwriting
 {
     class Instance;
-    class UIMGUI_PUBLIC_API MainView : public UImGui::InlineComponent
+    class UIMGUI_PUBLIC_API MainView final : public UImGui::InlineComponent
     {
     public:
-        MainView();
-        virtual void begin() override;
-        virtual void tick(float deltaTime) override;
-        virtual void end() override;
-        virtual ~MainView() override;
+        MainView() noexcept = default;
+        virtual void begin() noexcept override;
+        virtual void tick(float deltaTime) noexcept override;
+        virtual void end() noexcept override;
+        virtual ~MainView() noexcept override = default;
     private:
         Instance* data = nullptr;
 
