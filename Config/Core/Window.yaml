@@ -1,4 +1,6 @@
 layout-location: "DefaultLayout"                # The location of the layout file ImGui writes to
+load-layout: true                               # Whether to load the layout file ImGui writes to
+save-layout: true                               # Whether to automatically save to the layout file ImGui writes to
 icon: "untitled-ibus-handwrite.png"             # The location of the window icon image
 width: 254                                      # Width of the window in pixels
 height: 292                                     # Height of the window in pixels
