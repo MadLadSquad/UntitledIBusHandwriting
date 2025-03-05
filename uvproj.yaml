@@ -9,7 +9,6 @@ enabled-modules:
   dbus: false
   uexec: false
   theming: true
-  ufont: true
   i18n: true
   undo-redo: false
   plotting: false
