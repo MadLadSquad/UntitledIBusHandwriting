@@ -15,7 +15,7 @@
             <language>zh_CN</language>
             <license>MIT</license>
             <author>MadLadSquad &lt;contact@madladsquad.com&gt;</author>
-            <icon>/usr/share/UntitledIBusHandwriting/untitled-ibus-handwrite.png</icon>
+            <icon>/usr/share/UntitledIBusHandwriting/untitled-ibus-handwriting.png</icon>
             <layout>default</layout>
             <longname>UntitledIBusHandwriting</longname>
             <description>The UntitledIBusHandwriting engine</description>
