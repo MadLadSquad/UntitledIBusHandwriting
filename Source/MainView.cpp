@@ -4,7 +4,7 @@
 #include <Instance.hpp>
 
 #ifndef UIBUS_HANDWRITE_HANZI_LOOKUP_DIR
-    #define UIBUS_HANDWRITE_HANZI_LOOKUP_DIR "../hanzi_lookup/.target/release/libhanzi_lookup.so"
+    #define UIBUS_HANDWRITE_HANZI_LOOKUP_DIR "../hanzi_lookup/.target/release/"
 #endif
 
 void UntitledIBusHandwriting::MainView::begin() noexcept
