@@ -65,7 +65,7 @@ void UntitledIBusHandwriting::MainView::tick(const float deltaTime) noexcept
         undoTmpStroke.clear();
     }
     ImGui::SameLine();
-    if (ImGui::Button("Clear") || UImGui::Input::getKey(Keys_Escape) == Keys_KeyPressed)
+    if (ImGui::Button("Clear") || UImGui::Input::getKey(Keys_Escape) == KeyStatePressed)
     {
         stagingBuffer.clear();
         data->characters.clear();
